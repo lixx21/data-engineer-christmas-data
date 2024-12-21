@@ -1,0 +1,48 @@
+version: '3'
+
+networks:
+  network:
+
+services:
+  selenium-hub:
+    image: selenium/hub:3.141.59-20210929
+    container_name: selenium-hub
+    networks:
+      - network
+    ports:
+      - "4444:4444"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4444/wd/hub/status"]
+      interval: 5s
+      timeout: 10s
+      retries: 3
+
+  chrome:
+    image: selenium/node-chrome:3.141.59-20210929
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - selenium-hub
+    networks:
+      - network
+    environment:
+      - HUB_HOST=selenium-hub
+      - HUB_PORT=4444
+      - NODE_MAX_INSTANCES=3
+      - NODE_MAX_SESSION=3
+
+  scraping:
+    build: .
+    container_name: scraping
+    # volumes:
+    #   - ./app/streamlit:/app
+    networks:
+      - network
+    # ports:
+    #   - 3501:8501
+    depends_on:
+      selenium-hub:
+        condition: service_healthy
+    environment:
+    - HUB_HOST=selenium-hub
+      # - chrome
