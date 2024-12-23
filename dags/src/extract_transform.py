@@ -1,26 +1,23 @@
-from pyspark.sql import SparkSession
+import pandas as pd
 import requests
 import os 
 from datetime import datetime
 
 def extract_csv_data():
 
-    spark = SparkSession\
-        .builder\
-        .appName("Christmas Project")\
-        .getOrCreate()
+    print("extract christmas sales data...")
+    christmas_sales = pd.read_csv('dags/data/Christmas Sales and Trends.csv').to_dict(orient='records')
 
-    christmas_sales = spark.read.csv('../dags/data/Christmas Sales and Trends.csv', inferSchema=True, header=True)
-    christmas_movies = spark.read.csv('../dags/data/christmas_movies.csv', inferSchema=True, header=True)
+    print("extract christmas movies data..")
+    christmas_movies = pd.read_csv('dags/data/christmas_movies.csv').to_dict(orient='records')
 
-
-    return "Success Extract csv data"
+    return christmas_sales, christmas_movies
 
 
 def extract_spotify_data():
 
-    client_id = os.getenv("client_id")
-    client_secret = os.getenv("client_secret")
+    client_id = os.getenv("SPOTIFY_CLIENT_ID")
+    client_secret = os.getenv("SPOTIFY_CLIENT_SECRET")
 
     #TODO: Get bearer token
     url = "https://accounts.spotify.com/api/token"
@@ -65,6 +62,9 @@ def extract_spotify_data():
                 "image": playlist_image
             })
 
+    df = pd.DataFrame(christmas_playlist_data)
+    df.to_csv('dags/data/christmas_playlist.csv', index=False)
+
     return christmas_playlist_data
 
 
@@ -88,15 +88,17 @@ def extract_weather_data():
     date_data = int(data['dt'])
     wind_speed = data['wind']['speed']
 
-    weather_data = {
+    weather_data = [{
         "weather": weather,
         "weather_description": weather_description,
         "temp": temp,
         "humidity": humidity,
         "sea_level": sea_level,
         "country_name": country_name,
-        "date_data": datetime.fromtimestamp(date_data),
+        "date_data": date_data,
         "wind_speed": wind_speed
-    }
+    }]
 
+    df = pd.DataFrame(weather_data)
+    df.to_csv('dags/data/weather_data.csv', index=False)
     return weather_data
