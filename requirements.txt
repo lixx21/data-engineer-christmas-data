@@ -1,2 +1,2 @@
-pyspark==3.5.3
-selenium
+pandas
+boto3
