@@ -1,2 +1,4 @@
 notebook/
-docker-compose-scraping.yaml
+docker-compose-*.yaml
+logs/*
+__pycache__
