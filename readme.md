@@ -1,5 +1,9 @@
 # Christmas Project
 
+## Overview
+
+![project architecture](images/architecture.png)
+
 ## Project Setup
 
 
