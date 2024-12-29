@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: staging
+    database: christmas_data
+    schema: public
+    tables:
+        - name: sg_weather_data
+          description: weather data from OpenWeather API https://openweathermap.org/price#weather
+        - name: sg_christmas_sales
+          description: christmas sales data from https://www.kaggle.com/datasets/ibikunlegabriel/christmas-sales-and-trends
+        - name: sg_christmas_movies
+          description: christmas movies data from https://www.kaggle.com/datasets/jonbown/christmas-movies
+          

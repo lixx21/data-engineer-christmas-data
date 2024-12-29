@@ -1,0 +1,13 @@
+dbt_transform:
+  outputs:
+    dev:
+      account: <your account>
+      database: <your database>
+      password: <your snowflake password>
+      role: <your snowflake role>
+      schema: <your snowflake schema>
+      threads: 1
+      type: snowflake
+      user: <your snowflake username>
+      warehouse: <your snowflake warehouse name>
+  target: dev
