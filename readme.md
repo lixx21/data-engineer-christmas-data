@@ -5,6 +5,8 @@ This project integrates data from multiple sources to create a comprehensive Chr
 
 ![project architecture](images/architecture.png)
 
+![Dashboard](dashboard/dashboard.png)
+
 ## Project Setup
 
 
